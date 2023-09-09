@@ -3,6 +3,7 @@ import { Container, Form, Button, ProgressBar, Card } from "react-bootstrap";
 import AuditInfo from "./AuditInfo";
 import Reports from "./Report";
 import Formates from "./Formates";
+import Accounts from "./Accounts";
 
 const Audit = () => {
   const [currentStep, setCurrentStep] = useState(1);
@@ -11,13 +12,13 @@ const Audit = () => {
   const isBackButtonDisabled = currentStep === 1;
 
   useEffect(() => {
-    if (currentStep === 3 || currentStep === 4) {
+    if (currentStep === 4 || currentStep === 5) {
       const interval = setInterval(() => {
         if (progress < 100) {
           setProgress(progress + 1);
         } else {
           clearInterval(interval);
-          setCurrentStep(4);
+          setCurrentStep(5);
         }
       }, 100);
       return () => clearInterval(interval);
@@ -35,11 +36,12 @@ const Audit = () => {
   const renderCurrentStep = () => {
     switch (currentStep) {
       case 1:
-        return <AuditInfo />;
+        return <Accounts />;
       case 2:
-        return <Reports />;
-
+        return <AuditInfo />;
       case 3:
+        return <Reports />;
+      case 4:
         return (
           <div>
             <h4>Running Audit</h4>
@@ -57,7 +59,7 @@ const Audit = () => {
             </Card>
           </div>
         );
-      case 4:
+      case 5:
         return <Formates />;
       default:
         return null;
@@ -65,7 +67,7 @@ const Audit = () => {
   };
 
   const renderBackButton = () => {
-    if (currentStep === 1 || currentStep === 2) {
+    if (currentStep === 1 || currentStep === 2 || currentStep === 3) {
       return (
         <Button variant="secondary" onClick={handleBackClick}>
           Back
@@ -83,7 +85,7 @@ const Audit = () => {
           Next
         </Button>
       );
-    } else if (currentStep < 3) {
+    } else if (currentStep < 4) {
       return (
         <Button variant="primary" onClick={handleNextClick}>
           Next
